@@ -36,6 +36,7 @@ fibonacci(3)을 호출하면 다음과 같은 일이 일어난다.
 
  */
 public class Algo1003 {
+	static Integer[] res = new Integer[2];
 	public static void main(String[] args) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
@@ -44,16 +45,15 @@ public class Algo1003 {
 			int lnT = Integer.parseInt(br.readLine().trim()); // 반복수
 		
 			for(int i = 0; i < lnT; i++) {
-				Integer[] res = new Integer[2];
 				res[0] = 0;
 				res[1] = 0;
-				int lnNum = Integer.parseInt(br.readLine().trim()); // 반복수
+				int lnNum = Integer.parseInt(br.readLine().trim());
 				
-				function(lnNum, memorizedMap, res);
-				sb.append(res[0] + " " + res[1] + "\r\n");
+				function(lnNum, memorizedMap);
+				sb.append(res[0] + " " + res[1] + ((i==(lnT-1))?"":"\n"));
 
 			}
-			System.out.println(sb);
+			System.out.print(sb);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,7 +71,7 @@ public class Algo1003 {
 	/*
 	 * 재귀함수 용 함수
 	 */
-	public static void function(int param, HashMap<String, Integer[]> memorizedMap, Integer[] res) {
+	public static void function(int param, HashMap<String, Integer[]> memorizedMap) {
 		if(param == 0) {
 			res[0]++;
 		} else if(param == 1) {
@@ -80,10 +80,13 @@ public class Algo1003 {
 			res[0] += memorizedMap.get(Integer.valueOf(param).toString())[0];
 			res[1] += memorizedMap.get(Integer.valueOf(param).toString())[1];
 		} else {
-			function(param - 1, memorizedMap, res);
-			function(param - 2, memorizedMap, res);
+			function(param - 1, memorizedMap);
+			function(param - 2, memorizedMap);
 			if(!memorizedMap.containsKey(Integer.valueOf(param).toString())) {
-				memorizedMap.put(Integer.valueOf(param).toString(), res);
+				Integer[] inputRes = new Integer[2];
+				inputRes[0] = res[0];
+				inputRes[1] = res[1];
+				memorizedMap.put(Integer.valueOf(param).toString(), inputRes);
 			}
 		}
 	}
